@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <imgui.h>
+#include <opencv2/opencv.hpp>
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
@@ -42,6 +43,20 @@ int main() {
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
     ImGui_ImplOpenGL3_Init();
+
+
+    // OPENCV TEST
+    cv::Mat image = cv::imread("Dolphin_triangle_mesh.png", cv::IMREAD_COLOR);
+    
+    if (image.empty()) {
+        std::print("Can not load image");
+        return -1;
+    }
+    
+    cv::namedWindow("My image", cv::WINDOW_AUTOSIZE);
+    cv::imshow("My image", image);
+    
+    cv::waitKey(0);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))

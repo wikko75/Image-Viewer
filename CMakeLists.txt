@@ -9,9 +9,10 @@ project(
 
 message(STATUS "Building with CMake ...  ${CMAKE_VERSION}")
 
-find_package(imgui CONFIG REQUIRED)
-find_package(glfw3 CONFIG REQUIRED)
-find_package(glew  CONFIG REQUIRED)
+find_package(imgui   CONFIG REQUIRED)
+find_package(glfw3   CONFIG REQUIRED)
+find_package(glew    CONFIG REQUIRED)
+find_package(OpenCV  CONFIG REQUIRED)
 
 
 add_executable(${PROJECT_NAME})
@@ -19,7 +20,7 @@ add_executable(${PROJECT_NAME})
 add_subdirectory(src)
 add_subdirectory(bindings)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui glfw GLEW::GLEW)
+target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui glfw GLEW::GLEW opencv::opencv)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION "."
         RUNTIME DESTINATION bin
