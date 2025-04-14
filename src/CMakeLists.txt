@@ -1,3 +1,7 @@
-target_sources(${PROJECT_NAME} PRIVATE
+target_sources(${PROJECT_NAME} 
+    PRIVATE
     main.cpp
+    Window.cpp
+    GuiManager.cpp
+    ImageViewer.cpp
 )

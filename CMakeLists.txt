@@ -20,7 +20,18 @@ add_executable(${PROJECT_NAME})
 add_subdirectory(src)
 add_subdirectory(bindings)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui glfw GLEW::GLEW opencv::opencv)
+target_link_libraries(${PROJECT_NAME} 
+        PRIVATE 
+        imgui::imgui
+        glfw 
+        GLEW::GLEW
+        opencv::opencv
+)
+
+target_include_directories(${PROJECT_NAME} 
+        PRIVATE
+        inc
+)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION "."
         RUNTIME DESTINATION bin
