@@ -3,6 +3,7 @@ from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 from conan.tools.files import copy
 import os
 
+
 class pkgRecipe(ConanFile):
     name = "Image_Viewer"
     version = "1.0.0"
@@ -39,10 +40,12 @@ class pkgRecipe(ConanFile):
         deps.generate()
         tc = CMakeToolchain(self)
         tc.generator = "Ninja"
+        tc.variables["CMAKE_EXPORT_COMPILE_COMMANDS"] = True
         tc.generate()
-        
-        self.output.info(f"self.dependencies['imgui'].package_folder = {self.dependencies['imgui'].package_folder}")
-        
+
+        self.output.info(f"self.dependencies['imgui'].package_folder = {
+                         self.dependencies['imgui'].package_folder}")
+
         copy(self, "*glfw*", os.path.join(self.dependencies["imgui"].package_folder, "res", "bindings"),
              os.path.join(self.source_folder, "bindings"))
         copy(self, "*opengl3*", os.path.join(self.dependencies["imgui"].package_folder, "res", "bindings"),
@@ -53,10 +56,11 @@ class pkgRecipe(ConanFile):
         cmake.configure()
         cmake.build()
 
-    # def package(self):
+        copy(self, "compile_commands.json",
+             self.build_folder, self.source_folder)
+
+        self.output.info(f'compile_commands.json dst folder: {
+                         self.source_folder}')
+   # def package(self):
     #     cmake = CMake(self)
     #     cmake.install()
-
-    
-
-    
