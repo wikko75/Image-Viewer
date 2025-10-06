@@ -39,7 +39,7 @@ void ImView::ImageViewer::Run()
     // cv::imshow("My image", image);
     // cv::waitKey(0);
 
-    while (m_Window->IsOpen()) {
+    while (m_Window->Close()) {
         // rendering my stuff
         // ==========================
         glClearColor(0.494f, 0.078f, 0.91f, 1.f);

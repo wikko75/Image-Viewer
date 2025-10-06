@@ -27,12 +27,8 @@ GLFWwindow* ImView::Window::Get()
     return m_Window;
 }
 
-void ImView::Window::Close() noexcept
+bool ImView::Window::Close() noexcept
 {
-    m_IsOpen = false;
+    return !glfwWindowShouldClose(m_Window);
 }
 
-bool ImView::Window::IsOpen() const noexcept
-{
-    return m_IsOpen;
-}

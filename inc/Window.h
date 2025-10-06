@@ -19,9 +19,7 @@ public:
     explicit Window(const WindowData& data);
     ~Window();
     GLFWwindow* Get();
-    void Close() noexcept;
-    bool IsOpen() const noexcept;
-
+    bool Close() noexcept;
 private:
     GLFWwindow* m_Window;
     WindowData m_Data;
