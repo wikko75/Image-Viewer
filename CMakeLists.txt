@@ -15,6 +15,25 @@ find_package(glew    CONFIG REQUIRED)
 find_package(OpenCV  CONFIG REQUIRED)
 
 
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    add_compile_options(
+	-Wextra
+	-Wconversion
+	-Wall
+	-pedantic
+	-Wshadow
+	-g
+    )
+else()
+    add_compile_options(
+	-Wextra
+	-Wconversion
+	-Wall
+	-pedantic
+	-Wshadow
+    )
+endif()
+
 add_executable(${PROJECT_NAME})
 
 add_subdirectory(src)
