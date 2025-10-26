@@ -1,12 +1,14 @@
 #include "GuiManager.h"
+#include "FrameBuffer.h"
+#include "Window.h"
 #include <imgui.h>
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include "Window.h"
 #include <print>
 
-ImView::GuiManager::GuiManager(const std::shared_ptr<Window>& window)
+ImView::GuiManager::GuiManager(const std::shared_ptr<Window>& window, const std::shared_ptr<FrameBuffer>& image_framebuffer)
     : m_Window {window}
+    , m_Image_framebuffer {image_framebuffer}
 {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -55,6 +57,12 @@ void ImView::GuiManager::OnUpdate()
         }
         
         ImGui::EndMainMenuBar();
+    }
+    if (ImGui::Begin("ViewPort"))
+    {
+	ImGui::Image(m_Image_framebuffer->GetColorAttachment(), {800, 600});
+	
+	ImGui::End();
     }
     ImGui::ShowDemoWindow(); // Show demo window! :)
 }

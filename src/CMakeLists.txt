@@ -4,4 +4,5 @@ target_sources(${PROJECT_NAME}
     Window.cpp
     GuiManager.cpp
     ImageViewer.cpp
+    FrameBuffer.cpp
 )

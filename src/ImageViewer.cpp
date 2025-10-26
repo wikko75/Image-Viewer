@@ -1,6 +1,8 @@
 #include "ImageViewer.h"
 #include "Window.h"
 #include "GuiManager.h"
+#include "FrameBuffer.h"
+#include <memory>
 #include <print>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -9,6 +11,7 @@
 ImView::ImageViewer::ImageViewer()
     : m_Window     {nullptr}
     , m_GuiManager {nullptr}
+    , m_Framebuffer{nullptr}
 {
     if (!glfwInit()) {
         std::print("Failed to initialize GLFW");
@@ -22,28 +25,21 @@ ImView::ImageViewer::ImageViewer()
         return;
     }
 
-    m_GuiManager = std::make_shared<GuiManager>(m_Window);
+    m_Framebuffer = std::make_shared<FrameBuffer>();
+    m_GuiManager = std::make_shared<GuiManager>(m_Window, m_Framebuffer);
 }
 
 void ImView::ImageViewer::Run()
 {
-    // OPENCV TEST - not working yet, cause of the OpenGL state conflict
-    // cv::Mat image = cv::imread("Dolphin_triangle_mesh.png", cv::IMREAD_COLOR);
-
-    // if (image.empty()) {
-    //     std::print("Can not load image");
-    //     return;
-    // }
-    
-    // cv::namedWindow("My image", cv::WINDOW_AUTOSIZE);
-    // cv::imshow("My image", image);
-    // cv::waitKey(0);
 
     while (m_Window->Close()) {
         // rendering my stuff
         // ==========================
+	//INFO rendering to custom buffer
+	m_Framebuffer->Bind();
         glClearColor(0.494f, 0.078f, 0.91f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
         // ==========================
         m_GuiManager->OnUpdate();
         m_GuiManager->OnRender();
