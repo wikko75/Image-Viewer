@@ -1,0 +1,5 @@
+Checks: '*,-google*,-fuchsia*,-android*,-objc*,-llvmlibc*,-modernize-use-trailing-return-type'
+HeaderFileExtensions:         ['', 'h','hh','hpp','hxx']
+ImplementationFileExtensions: ['c','cc','cpp','cxx']
+HeaderFilterRegex: ''
+UseColor: true
