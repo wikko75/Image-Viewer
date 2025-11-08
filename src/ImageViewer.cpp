@@ -26,7 +26,7 @@ ImView::ImageViewer::ImageViewer()
     }
 
     m_Framebuffer = std::make_shared<FrameBuffer>();
-    m_GuiManager = std::make_shared<GuiManager>(m_Window, m_Framebuffer);
+    m_GuiManager = std::make_shared<GuiManager>(m_Window);
 }
 
 void ImView::ImageViewer::Run()
@@ -41,7 +41,7 @@ void ImView::ImageViewer::Run()
         glClear(GL_COLOR_BUFFER_BIT);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
         // ==========================
-        m_GuiManager->OnUpdate();
+        m_GuiManager->OnUpdate(*m_Framebuffer);
         m_GuiManager->OnRender();
         glfwSwapBuffers(m_Window->Get());
         glfwPollEvents();

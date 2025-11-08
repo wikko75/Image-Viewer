@@ -11,16 +11,13 @@ class FrameBuffer;
 class GuiManager
 {
 public:
-    explicit GuiManager(const std::shared_ptr<Window>& window, const std::shared_ptr<FrameBuffer>& image_framebuffer);
+    explicit GuiManager(const std::shared_ptr<Window>& window);
     ~GuiManager();
-    void OnUpdate();
+    void OnUpdate(FrameBuffer& image_framebuffer);
     void OnRender();
-
-private:
-    std::shared_ptr<Window> m_Window;
-    std::shared_ptr<FrameBuffer> m_Image_framebuffer;
 };
 
 } // namespace ImView
+
 #endif
 

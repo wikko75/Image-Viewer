@@ -6,9 +6,7 @@
 #include "imgui_impl_opengl3.h"
 #include <print>
 
-ImView::GuiManager::GuiManager(const std::shared_ptr<Window>& window, const std::shared_ptr<FrameBuffer>& image_framebuffer)
-    : m_Window {window}
-    , m_Image_framebuffer {image_framebuffer}
+ImView::GuiManager::GuiManager(const std::shared_ptr<Window>& window)
 {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -19,7 +17,7 @@ ImView::GuiManager::GuiManager(const std::shared_ptr<Window>& window, const std:
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
 
     // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(m_Window->Get(), true);    // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+    ImGui_ImplGlfw_InitForOpenGL(window->Get(), true);    // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
     ImGui_ImplOpenGL3_Init();
 
     // Setup Dear ImGui style
@@ -33,7 +31,7 @@ ImView::GuiManager::~GuiManager()
     ImGui::DestroyContext();
 }
 
-void ImView::GuiManager::OnUpdate()
+void ImView::GuiManager::OnUpdate(ImView::FrameBuffer& framebuffer)
 {
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
@@ -61,13 +59,13 @@ void ImView::GuiManager::OnUpdate()
     if (ImGui::Begin("ViewPort"))
     {
 	auto [current_width, current_height] {ImGui::GetContentRegionAvail()};
-	auto [prev_width, prev_height]       {m_Image_framebuffer->GetSize()};
+	auto [prev_width, prev_height]       {framebuffer.GetSize()};
 	if (prev_width != static_cast<uint32_t>(current_width) || prev_height != static_cast<uint32_t>(current_height))
 	{
 	    //TODO only changing struct, need to recreate framebuffer texture!
-	    m_Image_framebuffer->Resize({ .width = static_cast<uint32_t>(current_width), .height = static_cast<uint32_t>(current_height)});
+	    framebuffer.Resize({ .width = static_cast<uint32_t>(current_width), .height = static_cast<uint32_t>(current_height)});
 	}
-	ImGui::Image(m_Image_framebuffer->GetColorAttachment(), {current_width, current_height});
+	ImGui::Image(framebuffer.GetColorAttachment(), {current_width, current_height});
     }
     ImGui::End();
     ImGui::ShowDemoWindow(); // Show demo window! :)
