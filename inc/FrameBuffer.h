@@ -5,6 +5,12 @@
 
 namespace ImView {
 
+struct Size
+{
+    uint32_t width = 800;
+    uint32_t height = 600;
+};
+
 class FrameBuffer
 {
 public:
@@ -15,11 +21,14 @@ public:
     FrameBuffer& operator=(FrameBuffer&& other) = delete;
     [[nodiscard]] uint32_t GetColorAttachment() const;
     void Bind() const;
+    void Resize(const Size new_size) noexcept;
+    [[nodiscard]] Size GetSize() const noexcept;
     ~FrameBuffer();
 
 private:
     uint32_t m_id;
     uint32_t m_color_attachment;
+    Size m_size;
 };
 } // namespace ImView
 #endif

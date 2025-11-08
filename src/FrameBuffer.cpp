@@ -6,6 +6,7 @@
 ImView::FrameBuffer::FrameBuffer()
     : m_id{}
     , m_color_attachment{}
+    , m_size{}
 {
     glGenFramebuffers(1, &m_id);
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);
@@ -13,7 +14,7 @@ ImView::FrameBuffer::FrameBuffer()
     glGenTextures(1, &m_color_attachment);
     glBindTexture(GL_TEXTURE_2D, m_color_attachment);
       
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_size.width, m_size.height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
@@ -37,6 +38,17 @@ uint32_t ImView::FrameBuffer::GetColorAttachment() const
 void ImView::FrameBuffer::Bind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);  
+}
+
+void ImView::FrameBuffer::Resize(const Size new_size) noexcept
+{
+    //TODO recreate texture
+    m_size = new_size;
+}
+
+ImView::Size ImView::FrameBuffer::GetSize() const noexcept
+{
+    return m_size;
 }
 
 ImView::FrameBuffer::~FrameBuffer()

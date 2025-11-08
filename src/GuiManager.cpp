@@ -60,10 +60,16 @@ void ImView::GuiManager::OnUpdate()
     }
     if (ImGui::Begin("ViewPort"))
     {
-	ImGui::Image(m_Image_framebuffer->GetColorAttachment(), {800, 600});
-	
-	ImGui::End();
+	auto [current_width, current_height] {ImGui::GetContentRegionAvail()};
+	auto [prev_width, prev_height]       {m_Image_framebuffer->GetSize()};
+	if (prev_width != static_cast<uint32_t>(current_width) || prev_height != static_cast<uint32_t>(current_height))
+	{
+	    //TODO only changing struct, need to recreate framebuffer texture!
+	    m_Image_framebuffer->Resize({ .width = static_cast<uint32_t>(current_width), .height = static_cast<uint32_t>(current_height)});
+	}
+	ImGui::Image(m_Image_framebuffer->GetColorAttachment(), {current_width, current_height});
     }
+    ImGui::End();
     ImGui::ShowDemoWindow(); // Show demo window! :)
 }
 
