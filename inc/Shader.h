@@ -20,8 +20,8 @@ private:
 
     struct Data
     {
-	std::string vertex;
-	std::string fragment;
+        std::string vertex;
+        std::string fragment;
     };
     
     [[nodiscard]] static std::expected<Data, std::string_view> ReadFromFile(std::string_view vertex_path, std::string_view fragment_path) noexcept; 

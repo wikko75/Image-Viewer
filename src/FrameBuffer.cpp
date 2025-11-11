@@ -24,7 +24,7 @@ ImView::FrameBuffer::FrameBuffer()
 
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
-	std::print("ERROR::FRAMEBUFFER:: Framebuffer is not complete!\n");
+        std::print("ERROR::FRAMEBUFFER:: Framebuffer is not complete!\n");
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);  
