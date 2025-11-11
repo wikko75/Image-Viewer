@@ -1,4 +1,4 @@
-Checks: '*,-google*,-fuchsia*,-android*,-objc*,-llvmlibc*,-modernize-use-trailing-return-type'
+Checks: '*,-google*,-fuchsia*,-android*,-objc*,-llvmlibc*,-modernize-use-trailing-return-type, -llvm-include-order'
 HeaderFileExtensions:         ['', 'h','hh','hpp','hxx']
 ImplementationFileExtensions: ['c','cc','cpp','cxx']
 HeaderFilterRegex: ''
