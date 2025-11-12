@@ -6,4 +6,6 @@ target_sources(${PROJECT_NAME}
     ImageViewer.cpp
     FrameBuffer.cpp
     Shader.cpp
+    VertexArray.cpp
+    VertexBuffer.cpp
 )
