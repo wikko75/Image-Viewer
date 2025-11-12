@@ -13,8 +13,12 @@ class Shader
 {
 public:
     explicit Shader(std::string_view vertex_path, std::string_view fragment_path);
+    Shader(const Shader&) = delete;
+    Shader(Shader&&) = delete;
+    Shader& operator=(const Shader&) = delete;
+    Shader& operator=(Shader&&) = delete;
     void Bind() const noexcept; 
-
+    ~Shader();
 private:
     uint32_t m_shader_program_id;
 
