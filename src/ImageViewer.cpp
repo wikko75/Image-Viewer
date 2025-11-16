@@ -1,12 +1,16 @@
 #include "ImageViewer.h"
+#include "Image.h"
+#include "VertexBuffer.h"
 #include "Window.h"
 #include "GuiManager.h"
 #include "FrameBuffer.h"
+#include <filesystem>
 #include <memory>
 #include <print>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <opencv2/opencv.hpp>
+#include "Shader.h"
+#include "VertexArray.h"
 
 ImView::ImageViewer::ImageViewer()
     : m_Window     {nullptr}
@@ -31,15 +35,45 @@ ImView::ImageViewer::ImageViewer()
 
 void ImView::ImageViewer::Run()
 {
+    std::array vertices = {
+        //pos               tex. coors
+	-0.5f, -0.5f, 0.0f,     0.0f, 0.0f,
+	 0.5f, -0.5f, 0.0f,     1.0f, 0.0f,
+	 0.5f,  0.5f, 0.0f,     1.0f, 1.0f,
 
-    while (m_Window->Close()) {
-        // rendering my stuff
+	 0.5f,  0.5f, 0.0f,     1.0f, 1.0f,
+	-0.5f,  0.5f, 0.0f,     0.0f, 1.0f,
+	-0.5f, -0.5f, 0.0f,     0.0f, 0.0f
+    };
+
+    const auto base { std::filesystem::current_path() / "assets" / "shaders"};
+    const std::string vertex_path { (base / "vertex.glsl").c_str() };
+    const std::string fragment_path { (base / "fragment.glsl").c_str() };
+    const std::string image_path { base.parent_path() / "images" / "Dolphin_triangle_mesh.png" };
+    Shader shader { vertex_path, fragment_path };
+
+    VertexArray vao {};
+    vao.Bind();
+    VertexBuffer vbo {vertices};
+    Image image { image_path };
+
+    shader.Bind();
+    glUniform1i(glGetUniformLocation(shader.GetID(), "texture_sampler"), 0);
+
+    while (m_Window->Close()) 
+    {
+        // rendering my stuff rendering to custom buffer
         // ==========================
-	//INFO rendering to custom buffer
-	m_Framebuffer->Bind();
-        glClearColor(0.494f, 0.078f, 0.91f, 1.f);
-        glClear(GL_COLOR_BUFFER_BIT);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        {
+            m_Framebuffer->Bind();
+            glClearColor(0.2f, 0.2f, 0.2f, 1.f);
+            glClear(GL_COLOR_BUFFER_BIT);
+            shader.Bind();
+            vao.Bind();
+            image.Show();
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
         // ==========================
         m_GuiManager->OnUpdate(*m_Framebuffer);
         m_GuiManager->OnRender();
@@ -47,3 +81,4 @@ void ImView::ImageViewer::Run()
         glfwPollEvents();
     }
 }
+
