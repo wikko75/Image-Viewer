@@ -8,6 +8,7 @@ namespace ImView {
 class Window;
 class GuiManager;
 class FrameBuffer;
+class Image;
 
 class ImageViewer
 {
@@ -19,6 +20,7 @@ private:
     std::shared_ptr<Window>     m_Window;
     std::shared_ptr<GuiManager> m_GuiManager;
     std::shared_ptr<FrameBuffer> m_Framebuffer;
+    std::shared_ptr<Image> m_Image;
 };
 
 } // namespace ImView
