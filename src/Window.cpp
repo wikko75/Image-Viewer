@@ -1,20 +1,24 @@
 #include "Window.h"
+#include <GLFW/glfw3.h>
 #include <print>
 
 ImView::Window::Window(const WindowData &data)
-    : m_Window {nullptr}
+    : m_Window {}
     , m_Data   {data}
     , m_IsOpen {false}
 {
-    m_Window = glfwCreateWindow(data.width, data.height, data.title, NULL, NULL);
-    
-    if (!m_Window) {
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    m_Window = glfwCreateWindow(data.width, data.height, data.title, nullptr, nullptr);
+    if (m_Window == nullptr) {
         glfwTerminate();
         std::print("Failed to create GLFW window");
         return;
     }
-    m_IsOpen = true;
     glfwMakeContextCurrent(m_Window);
+    m_IsOpen = true;
 }
 
 ImView::Window::~Window()
