@@ -18,6 +18,7 @@ public:
     Shader& operator=(const Shader&) = delete;
     Shader& operator=(Shader&&) = delete;
     void Bind() const noexcept; 
+    [[nodiscard]] uint32_t GetID() const noexcept;
     ~Shader();
 private:
     uint32_t m_shader_program_id;

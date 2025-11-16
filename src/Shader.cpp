@@ -144,6 +144,11 @@ std::expected<uint32_t, std::string_view> ImView::Shader::Compile(const ImView::
     return std::expected<uint32_t, std::string_view> {shader_program};
 }
 
+uint32_t ImView::Shader::GetID() const noexcept
+{
+    return m_shader_program_id;
+}
+
 ImView::Shader::~Shader()
 {
     glDeleteProgram(m_shader_program_id);
