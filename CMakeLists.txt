@@ -13,6 +13,7 @@ find_package(imgui   CONFIG REQUIRED)
 find_package(glfw3   CONFIG REQUIRED)
 find_package(glew    CONFIG REQUIRED)
 find_package(OpenCV  CONFIG REQUIRED)
+find_package(glm     CONFIG REQUIRED)
 
 
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
@@ -45,6 +46,7 @@ target_link_libraries(${PROJECT_NAME}
         glfw 
         GLEW::GLEW
         opencv::opencv
+        glm::glm
 )
 
 target_include_directories(${PROJECT_NAME} 

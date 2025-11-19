@@ -31,6 +31,7 @@ class pkgRecipe(ConanFile):
         self.requires("glfw/3.4")
         self.requires("glew/2.2.0")
         self.requires("opencv/4.11.0")
+        self.requires("glm/1.0.1")
 
     def layout(self):
         cmake_layout(self)
