@@ -11,15 +11,7 @@ ImView::FrameBuffer::FrameBuffer()
     glGenFramebuffers(1, &m_id);
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);
 
-    glGenTextures(1, &m_color_attachment);
-    glBindTexture(GL_TEXTURE_2D, m_color_attachment);
-      
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_size.width, m_size.height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
-
-    glBindTexture(GL_TEXTURE_2D, 0);
+    m_color_attachment = CreateColorAttachment(m_size);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_color_attachment, 0);  
 
     if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -58,10 +50,24 @@ uint32_t ImView::FrameBuffer::CreateColorAttachment(const Size size)
 
     return m_color_attachment;
 }
+
 void ImView::FrameBuffer::Resize(const Size new_size) noexcept
 {
-    //TODO recreate texture
     m_size = new_size;
+
+    if (m_color_attachment != 0)
+    {
+        glDeleteTextures(1, &m_color_attachment);
+    }
+
+    m_color_attachment = CreateColorAttachment(new_size);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_id); 
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_color_attachment, 0);  
+
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    {
+        std::print("ERROR::FRAMEBUFFER:: Framebuffer is not complete!\n");
+    }
 }
 
 ImView::Size ImView::FrameBuffer::GetSize() const noexcept

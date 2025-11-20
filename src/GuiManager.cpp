@@ -58,13 +58,20 @@ void ImView::GuiManager::OnUpdate(ImView::FrameBuffer& framebuffer)
     }
     if (ImGui::Begin("ViewPort"))
     {
-        auto [current_width, current_height] {ImGui::GetContentRegionAvail()};
-        auto [prev_width, prev_height]       {framebuffer.GetSize()};
-        if (prev_width != static_cast<uint32_t>(current_width) || prev_height != static_cast<uint32_t>(current_height))
+        auto [current_width, current_height] { ImGui::GetContentRegionAvail() };
+        const auto [prev_width, prev_height] { framebuffer.GetSize() };
+        const float aspect_ratio { static_cast<float>(prev_width) / prev_height };
+
+        //temp; aspect ratio will be calculated by projection mtx
+        if (current_width / current_height < aspect_ratio)
         {
-            //TODO only changing struct, need to recreate framebuffer texture!
-            framebuffer.Resize({ .width = static_cast<uint32_t>(current_width), .height = static_cast<uint32_t>(current_height)});
+            current_height = current_width / aspect_ratio;
         }
+        else
+        {
+            current_width = current_height * aspect_ratio;
+        }
+
         ImGui::Image(framebuffer.GetColorAttachment(), {current_width, current_height});
     }
     ImGui::End();

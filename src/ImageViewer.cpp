@@ -22,7 +22,7 @@ ImView::ImageViewer::ImageViewer()
         return;
     }
 
-    m_Window = std::make_shared<Window>(WindowData{800, 600, "Image Viewer"});
+    m_Window = std::make_shared<Window>(WindowData{800, 600, false, "Image Viewer"});
 
     if (glewInit() != GLEW_OK) {
         std::print("Failed to initialize GLEW");
@@ -62,6 +62,13 @@ void ImView::ImageViewer::Run()
 
     while (m_Window->Close()) 
     {
+        if (m_Window->IsResized())
+        {
+            const auto [current_width, current_height] { m_Window->GetSize() };
+            m_Framebuffer->Resize({ .width = static_cast<uint32_t>(current_width), .height = static_cast<uint32_t>(current_height)});
+            m_Window->Resized(false);
+        }
+
         // rendering my stuff rendering to custom buffer
         // ==========================
         {
@@ -72,7 +79,7 @@ void ImView::ImageViewer::Run()
             vao.Bind();
             image.Show();
             glDrawArrays(GL_TRIANGLES, 0, 6);
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            m_Framebuffer->Unbind();
         }
         // ==========================
         m_GuiManager->OnUpdate(*m_Framebuffer);

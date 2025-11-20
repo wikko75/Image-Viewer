@@ -17,6 +17,17 @@ ImView::Window::Window(const WindowData &data)
         std::print("Failed to create GLFW window");
         return;
     }
+
+    glfwSetWindowUserPointer(m_Window, &m_Data);
+
+    glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* w, int width, int height) {
+        glViewport(0, 0, width, height);
+        WindowData* window_data { static_cast<WindowData*>(glfwGetWindowUserPointer(w)) };
+        window_data->height = height;
+        window_data->width = width;
+        window_data->is_resized = true;
+    });
+
     glfwMakeContextCurrent(m_Window);
     m_IsOpen = true;
 }
@@ -34,5 +45,20 @@ GLFWwindow* ImView::Window::Get()
 bool ImView::Window::Close() noexcept
 {
     return !glfwWindowShouldClose(m_Window);
+}
+
+bool ImView::Window::IsResized() const
+{
+    return m_Data.is_resized;
+}
+
+std::pair<int, int> ImView::Window::GetSize() const noexcept
+{
+    return { m_Data.width, m_Data.height };
+}
+
+void ImView::Window::Resized(bool flag) noexcept
+{
+    m_Data.is_resized = flag;
 }
 
