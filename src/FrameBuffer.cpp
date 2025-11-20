@@ -44,6 +44,20 @@ void ImView::FrameBuffer::Unbind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
+
+uint32_t ImView::FrameBuffer::CreateColorAttachment(const Size size)
+{
+    std::print("New size: [{}, {}]\n", size.width, size.height);
+    glGenTextures(1, &m_color_attachment);
+    glBindTexture(GL_TEXTURE_2D, m_color_attachment);
+      
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.width, size.height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+
+    return m_color_attachment;
+}
 void ImView::FrameBuffer::Resize(const Size new_size) noexcept
 {
     //TODO recreate texture

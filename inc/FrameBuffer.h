@@ -27,6 +27,8 @@ public:
     ~FrameBuffer();
 
 private:
+    [[nodiscard]] uint32_t CreateColorAttachment(const Size size);
+private:
     uint32_t m_id;
     uint32_t m_color_attachment;
     Size m_size;
