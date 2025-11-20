@@ -21,6 +21,7 @@ public:
     FrameBuffer& operator=(FrameBuffer&& other) = delete;
     [[nodiscard]] uint32_t GetColorAttachment() const;
     void Bind() const;
+    void Unbind() const;
     void Resize(const Size new_size) noexcept;
     [[nodiscard]] Size GetSize() const noexcept;
     ~FrameBuffer();

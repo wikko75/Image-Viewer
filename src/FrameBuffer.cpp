@@ -40,6 +40,10 @@ void ImView::FrameBuffer::Bind() const
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);  
 }
 
+void ImView::FrameBuffer::Unbind() const
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
 void ImView::FrameBuffer::Resize(const Size new_size) noexcept
 {
     //TODO recreate texture
